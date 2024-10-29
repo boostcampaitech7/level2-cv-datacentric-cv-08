@@ -53,7 +53,7 @@ def do_training(data_dir, model_dir, device, image_size, input_size, num_workers
     mlflow.set_experiment("EAST Model Training")
 
     # Log parameters with MLflow
-    with mlflow.start_run() as run:
+    with mlflow.start_run(run_name="~~실험") as run:
         mlflow.log_params({
             "data_dir": data_dir,
             "model_dir": model_dir,
