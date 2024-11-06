@@ -35,12 +35,13 @@ import mlflow.pytorch
     mlflow_runname : mlflow 런이름
 '''
 
-server_number:int = 0
-name:str = ""
-task:str = ""
-mlflow_url:str = ""
-mlflow_exp:str = ""
-mlflow_runname:str = ""
+server_number = 4
+name = "이상진"
+# task = "데이터셋 ver 4(구부러진, 나누어진거 수정), AdamW, CosineAnnealing, lr : 0.0005"
+task = "ver2 + pseudo(kaggle,thai,syzh,syjp,cord), AdamW, CosineAnnealing, lr:0.0005"
+mlflow_url = "https://shoe-worker-recommends-boutique.trycloudflare.com"
+mlflow_exp = "server4"
+mlflow_runname = "train"
 
 with open("/data/ephemeral/home/key/uuid.json", 'r') as fp:
     receiver_uuids = json.load(fp)
@@ -174,7 +175,7 @@ def do_training(data_dir, model_dir, device, image_size, input_size, num_workers
                     if not osp.exists(model_dir):
                         os.makedirs(model_dir)
 
-                    ckpt_fpath = osp.join(model_dir, 'latest.pth')
+                    ckpt_fpath = osp.join(model_dir, 'best.pth')
                     torch.save(model.state_dict(), ckpt_fpath)
                     
                     mlflow.log_artifact(ckpt_fpath)
