@@ -99,23 +99,25 @@ code
 
 ```
 ### 1) Services
-- `configs/a_custom/`: MMDetection 모델의 학습과 추론에 필요한 설정 파일들을 포함하고 있습니다.
-- `tools/fold_train.py`: Stratified Group K-Fold 교차 검증을 통한 학습을 제공합니다.
-
+- `kakao.py`: 카카오톡 액세스 토큰을 불러와 카카오톡 메시지로 학습현황을 전송합니다.
+- `refresh_kakao_token.py`: 카카오톡 액세스 토큰을 새로 발급합니다.
+- `sheet_kakao_key_update.py`: 구글 스프레드 시트에 카카오톡 액세스 토큰을 업데이트합니다.
+- `sheet_pull_kakao_key.py`: 구글 스프레드 시트에서 액세스 토큰을 가져와 로컬 토큰을 업데이트합니다.
+- `slack.py`: 학습현황을 슬랙 메시지로 보냅니다.
+- `spreadsheet.py`: 서버의 학습 현황을 구글 스프레드 시트에 업데이트합니다.
+  
 ### 2) Streamlit_viz
-- `data/`: 데이터셋 로딩 및 증강 관련 파일들을 포함하고 있습니다.
-- `models/`: 모델 로드 및 저장 관련 파일들을 포함하고 있습니다.
-- `process/`: 이미지 전처리 기능을 제공합니다.
-- `train/`: 모델 학습 및 평가에 필요한 파일들을 포함하고 있습니다.
+- `streamlit_viz.py`: dataset의 annotation을 streamlit으로 시각화합니다.
 
 ### 3) tools
 - `cloba2datu.ipynb`: cloba 데이터셋을 datumaro 형식으로 변환합니다.
 - `datu2ufo.ipynb`: datumaro 형식의 데이터셋을 UFO 형식으로 변환합니다.
 - `ufo2datu.ipynb`: UFO 형식의 데이터셋을 datumaro 형식으로 변환합니다.
 - `easyocr_pseudo.ipynb`: Easyocr 라이브러리를 활용해서 pseudo-labeling을 진행합니다.
-- `img_hash.ipynb`: 이미지 hash값을 구해 중복된 데이터를 검출합니다.
+- `img_hash.ipynb`: 이미지 hash값을 구합니다.
 - `inference_visualize.ipynb`: inference한 결과를 test이미지에 시각화합니다.
 - `server-status.py`: 현재 서버상태를 불러옵니다.
+- `data_duplication_check.py`: hash값으로 이미지가 겹치는지 확인하고 제거합니다.
 
 <br />
 
@@ -187,53 +189,30 @@ pip install -r requirements.txt
 
 ## 🚀 빠른 시작
 ### Train
-#### MMDetection
-
 ```python
-# fold train
-python tools/fold_train.py {config_path}
-
 # train
-python tools/train.py {config_path}
+python custom_train.py 
 ```
-
-#### Torchvision
-```python
-python main.py
-```
-##### Torchvision Parser
+##### Train Parser
 기본 설정
-- `--annotations_path` : train.json path
 - `--data_dir` : Dataset directory
-- `--model_name` : 학습 진행할 모델 이름 ( 기본값: Faster RCNN )
-- `--device` : `cuda` or `cup` ( 기본값 : cuda )
-- `--base_dir` : result path
+- `--model_dir` : Model directory (기본값 : EAST Model)
+- `--device` : `cuda` or `cpu` ( 기본값 : cuda )
 
 학습 설정
-- `--num_epochs` : 학습할 에폭 수 (기본값 : 1)
-- `--batch_size` : 배치 크기 결정 ( 기본값 : 32 )
-- `--n_split` : fold split 수량 ( 기본값 : 5 )
-- `--training_mode` : `standard` or `fold` (필수)
-
-옵티마이저 설정
-- `--optimizer` : `SGD` or `AdamW` ( 기본값 : SGD )
+- `--num_workers` : 학습할 프로세스 수 (기본값 : 8)
+- `--image_size` : 학습할 이미지 크기 (기본값 : 2048)
+- `--input_size` : 학습할 입력 이미지 크 (기본값 : 1024)
+- `--batch_size` : 배치 크기 결정 ( 기본값 : 8)
 - `--learning_rate` : 학습률 설정 ( 기본값 : 0.001)
-- `--momentum` : SGD Momentum 값 설정 ( 기본값 0.9 )
-- `--weight_decay` : 옵티마이저 weight decay 설정 ( 기본값 : 0.0009 )
-
-스케쥴러 설정 (CosineAnnealing)
-- `--scheduler_t_max` : 코사인 어널링 t max 설정 ( 기본값 : 40)
-- `--scheduler_eta_min` : 코사인 어널링 eta min 설정 ( 기본값 : 0)
+- `--max_epochs` : 학습할 에폭 수 (기본값 : 150)
+- `--save_interval` : 가중치를 저장할 epoch 간격 (기본값 : 5)
 
 ### Test
-#### MMDetection
 ```python
-python tools/test.py {config_path} {pth_file_path}
+python inference.py
 ```
 
-##### MMDetection Parser
-- `--tta` : Test Time Augmentation 활성화
-<br />
 
 ## 🏅 Wrap-Up Report   
 ### [ Wrap-Up Report 👑](https://github.com/boostcampaitech7/level2-objectdetection-cv-08/blob/main/WRAP_UP/CV08_level2_%EB%9E%A9%EC%97%85%EB%A6%AC%ED%8F%AC%ED%8A%B8.pdf)
