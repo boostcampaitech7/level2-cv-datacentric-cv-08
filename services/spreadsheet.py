@@ -2,6 +2,12 @@ import json
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 
+'''
+SPREADSHEET_ID : 업데이트할 구글 스프레드시트 ID
+SERVER_STATUS_RANGES : 서버 상태를 업데이트할 셀 범위 (서버 번호별 셀 위치)
+CLOUD_KEY : Google Cloud 서비스 계정 키가 저장된 JSON 파일 경로
+'''
+
 SPREADSHEET_ID = "YOUR SHEET ID"
 
 SERVER_STATUS_RANGES = {
@@ -14,6 +20,12 @@ SERVER_STATUS_RANGES = {
 CLOUD_KEY = "GOOGLE CLOUD KEY PATH"
 
 def get_sheets_service():
+    '''
+    Google Sheets API 서비스 불러오는 함수
+    
+    Returns:
+        service: Google Sheets API 서비스 객체
+    '''
     creds = service_account.Credentials.from_service_account_file(
         CLOUD_KEY, scopes=["https://www.googleapis.com/auth/spreadsheets"]
     )
@@ -22,10 +34,16 @@ def get_sheets_service():
 
 def update_server_status(server_number:int, name:str=None, status:bool=True, task:str=None):
     '''
-    server_number = 사용중인 서버숫자
-    name = 작업자 이름 (학습중일때 필수)
-    status = 학습중(True), 학습완료(False)
-    task = 어떤 작업을 수행하는가 (선택)
+    지정된 서버의 상태를 구글 스프레드시트에 업데이트하는 함수
+    
+    Parameters:
+        server_number (int): 업데이트할 서버 번호 (1, 2, 3, 4 중 하나)
+        name (str): 작업자 이름 (학습 중일 때 필수)
+        status (bool): 학습 상태 - 학습 중(True) 또는 학습 완료(False)
+        task (str): 수행 중인 작업 내용 (선택 사항)
+    
+    Returns:
+        None
     '''
     if server_number not in SERVER_STATUS_RANGES:
         print('잘못된 서버 번호를 적어놓았습니다. 1,2,3,4 중에서 한개를 넣어주세요')
@@ -62,9 +80,14 @@ def update_server_status(server_number:int, name:str=None, status:bool=True, tas
 
 def append_training_log(sheet_name, data):
     '''
-    sheet_name = 스프레드시트 이름 ex)이상진
-    data = {"epoch":epoch, "loss":loss, "task":task}
-            스프레드시트 형태와 열 이름에 맞도록 제작할것
+    학습 로그를 구글 스프레드시트에 추가하는 함수
+    
+    Parameters:
+        sheet_name (str): 스프레드시트 시트 이름 (예: 작업자 이름)
+        data (dict): 학습 로그 데이터 (예: {"epoch": epoch, "loss": loss, "task": task})
+        
+    Returns:
+        None
     '''
     service = get_sheets_service()
     sheet = service.spreadsheets()

@@ -5,7 +5,6 @@ import math
 from datetime import timedelta
 from argparse import ArgumentParser
 
-# custom services
 import services.kakao as kakao
 import services.spreadsheet as sp
 import json
@@ -21,7 +20,6 @@ from east_dataset import EASTDataset
 from dataset import SceneTextDataset
 from model import EAST
 
-# mlflow
 import mlflow
 import mlflow.pytorch
 
@@ -33,17 +31,18 @@ import mlflow.pytorch
     mlflow url : mlflow 주소
     mlflow experiment : mlflow 실험이름
     mlflow_runname : mlflow 런이름
+    uuid_path : 카카오톡 uuid가 저장된 json 경로
 '''
 
-server_number = 4
-name = "이상진"
-# task = "데이터셋 ver 4(구부러진, 나누어진거 수정), AdamW, CosineAnnealing, lr : 0.0005"
-task = "ver2 + pseudo(kaggle,thai,syzh,syjp,cord), AdamW, CosineAnnealing, lr:0.0005"
-mlflow_url = "https://shoe-worker-recommends-boutique.trycloudflare.com"
-mlflow_exp = "server4"
-mlflow_runname = "train"
+server_number = 1
+name = ""
+task = ""
+mlflow_url = ""
+mlflow_exp = ""
+mlflow_runname = ""
+uuid_path = ""
 
-with open("/data/ephemeral/home/key/uuid.json", 'r') as fp:
+with open(uuid_path, 'r') as fp:
     receiver_uuids = json.load(fp)
 
 receiver_uuids = list(receiver_uuids.keys())
@@ -76,7 +75,7 @@ def parse_args():
 
 def do_training(data_dir, model_dir, device, image_size, input_size, num_workers, batch_size,
                 learning_rate, max_epoch, save_interval):
-    # 구글 스프레드시트 업데이트, 카카오톡 메세지 전송
+    
     sp.update_server_status(server_number = server_number, 
                             name = name,
                             status = True, 
@@ -90,8 +89,8 @@ def do_training(data_dir, model_dir, device, image_size, input_size, num_workers
     mlflow.set_tracking_uri(mlflow_url)
     mlflow.set_experiment(mlflow_exp)
     
-    epoch_loss = 0  # 초기화
-    num_batches = 1  # 초기화하여 ZeroDivisionError 방지
+    epoch_loss = 0 
+    num_batches = 1 
     best_loss = float('inf')
     
     with mlflow.start_run(run_name = mlflow_runname) as run:
@@ -180,7 +179,6 @@ def do_training(data_dir, model_dir, device, image_size, input_size, num_workers
                     
                     mlflow.log_artifact(ckpt_fpath)
                     
-                # 총 3번의 카카오톡 메세지 송신
                 if (epoch + 1) % (max_epoch // 3) == 0:
                     kakao.send_message(receiver_uuids=receiver_uuids,
                                     message_text=f"서버 {server_number}번\n{name}님의 {task}\n학습 현황 Epoch: {epoch + 1}\nloss: {best_loss}")
@@ -193,7 +191,6 @@ def do_training(data_dir, model_dir, device, image_size, input_size, num_workers
             slack.send_slack_notification(f"{name}님이\n서버 {server_number}번에서\n{max_epoch}epoch\n{task} 학습이 완료되었습니다.")
             mlflow.pytorch.log_model(model, "model")
             
-        # 에러 카카오톡,slack 메세지 송신
         except Exception as e:
             kakao.send_message(receiver_uuids=receiver_uuids,
                             message_text=f"서버 {server_number}번에서\n{name}님의 {task} 학습 도중\n에러가 발생하였습니다.\n확인이 필요합니다.\n{e}")
@@ -205,7 +202,6 @@ def do_training(data_dir, model_dir, device, image_size, input_size, num_workers
                 "task" : task
             }
             
-            #서버 현황 업데이트
             sp.append_training_log(name, data)
             sp.update_server_status(server_number = server_number,
                                     status = False)
