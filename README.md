@@ -31,11 +31,11 @@ OCR은 글자 검출 (Text detection), 글자 인식 (Text recognition), 정렬�
 
 ## 🥈 프로젝트 결과
 ### Public
-- **** / 24
+- 4 / 24
 - F1 Score : **0.9200**
 ### Private
-- **** / 24
-- F1 Score : **0.**
+- 5 / 24
+- F1 Score : **0.9073**
 
 <br />
 
