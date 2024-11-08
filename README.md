@@ -68,35 +68,31 @@ data/
 ## 🥉 프로젝트 구조
 ```
 project/
-│   README.md
-│   requirements.txt
-│   start_ngrok.py
-│
-├───tools
-│       cleansing_labels.ipynb
-│       coco2yolo.py
-│       csv_bbox_visualize.ipynb
-│       ensemble.ipynb
-│       json_bbox_visualize.ipynb
-│       json_coco2pascal.ipynb
-│
-└───yolo
-    │   yolo_inference.ipynb
-    │   yolo_train.ipynb
+    ├─  README.md
+    ├─  requirements.txt
+    ├─  setup.sh
+    ├─  custom_train.py
+    ├─  find_hyper_pram.py
     │
-    └───cfg
-            coco-trash.yaml
-code
-└─  model.py
-└─  loss.py
-└─  train.py
-└─  inference.py
-└─  dataset.py
-└─  detect.py
-└─  deteval.py
-└─  east_dataset.py
-└─  requirements.txt
-
+    ├── services
+    │     ├─  kakao.py
+    │     ├─  refresh_kakao_token.py
+    │     ├─  sheet_kakao_key_update.py
+    │     ├─  sheet_pull_kakao_key.py
+    │     ├─  slack.py
+    │     └─  spreadsheet.py
+    │
+    └─── tools
+          ├─  cloba2datu.ipynb
+          ├─  datu2ufo.ipynb
+          ├─  ufo2datu.ipynb
+          ├─  easyocr_pseudo.ipynb
+          ├─  img_hash.ipynb
+          ├─  inference_visualize.ipynb
+          ├─  server-status.py
+          ├─  data_duplication_check.py
+          └─  streamlit_viz.py  
+    
 ```
 ### 1) Services
 - `kakao.py`: 카카오톡 액세스 토큰을 불러와 카카오톡 메시지로 학습현황을 전송합니다.
@@ -106,10 +102,7 @@ code
 - `slack.py`: 학습현황을 슬랙 메시지로 보냅니다.
 - `spreadsheet.py`: 서버의 학습 현황을 구글 스프레드 시트에 업데이트합니다.
   
-### 2) Streamlit_viz
-- `streamlit_viz.py`: dataset의 annotation을 streamlit으로 시각화합니다.
-
-### 3) tools
+### 2) tools
 - `cloba2datu.ipynb`: cloba 데이터셋을 datumaro 형식으로 변환합니다.
 - `datu2ufo.ipynb`: datumaro 형식의 데이터셋을 UFO 형식으로 변환합니다.
 - `ufo2datu.ipynb`: UFO 형식의 데이터셋을 datumaro 형식으로 변환합니다.
@@ -118,6 +111,7 @@ code
 - `inference_visualize.ipynb`: inference한 결과를 test이미지에 시각화합니다.
 - `server-status.py`: 현재 서버상태를 불러옵니다.
 - `data_duplication_check.py`: hash값으로 이미지가 겹치는지 확인하고 제거합니다.
+- `streamlit_viz.py`: dataset의 annotation을 streamlit으로 시각화합니다.
 
 <br />
 
@@ -190,7 +184,6 @@ pip install -r requirements.txt
 ## 🚀 빠른 시작
 ### Train
 ```python
-# train
 python custom_train.py 
 ```
 ##### Train Parser
@@ -208,10 +201,6 @@ python custom_train.py
 - `--max_epochs` : 학습할 에폭 수 (기본값 : 150)
 - `--save_interval` : 가중치를 저장할 epoch 간격 (기본값 : 5)
 
-### Test
-```python
-python inference.py
-```
 
 
 ## 🏅 Wrap-Up Report   
