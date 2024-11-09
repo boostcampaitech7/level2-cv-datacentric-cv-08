@@ -124,6 +124,8 @@ project/
 ```bash
 pip install -r requirements.txt
 ```
+<details>
+<summary>requirements 접기/펼치기</summary>
 
 - lanms==1.0.2
 - opencv-python==4.10.0.84
@@ -177,8 +179,7 @@ pip install -r requirements.txt
 - tomli==2.0.1
 - triton==2.1.0
 - typing_extensions==4.12.2
-
-
+</details>
 <br />
 
 ## 🚀 빠른 시작
@@ -186,7 +187,7 @@ pip install -r requirements.txt
 ```python
 python custom_train.py 
 ```
-##### Train Parser
+### Train Parser
 기본 설정
 - `--data_dir` : Dataset directory
 - `--model_dir` : Model directory (기본값 : EAST Model)
@@ -201,7 +202,5 @@ python custom_train.py
 - `--max_epochs` : 학습할 에폭 수 (기본값 : 150)
 - `--save_interval` : 가중치를 저장할 epoch 간격 (기본값 : 5)
 
-
-
 ## 🏅 Wrap-Up Report   
-### [ Wrap-Up Report 👑](https://github.com/boostcampaitech7/level2-objectdetection-cv-08/blob/main/WRAP_UP/CV08_level2_%EB%9E%A9%EC%97%85%EB%A6%AC%ED%8F%AC%ED%8A%B8.pdf)
+### [ Wrap-Up Report 👑]
