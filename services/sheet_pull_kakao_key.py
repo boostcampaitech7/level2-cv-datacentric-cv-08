@@ -30,7 +30,6 @@ def get_access_token():
     )
     service = build('sheets', 'v4', credentials=creds)
 
-    # 스프레드시트에서 access_token 가져오기
     sheet = service.spreadsheets()
     result = sheet.values().get(spreadsheetId=SPREADSHEET_ID, 
                                 range=RANGE_NAME).execute()
