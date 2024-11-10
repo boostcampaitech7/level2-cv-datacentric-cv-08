@@ -27,14 +27,48 @@ OCR은 글자 검출 (Text detection), 글자 인식 (Text recognition), 정렬�
 
 - 2024.10.28(월) ~ 2024.11.7(목)
 
+<div align='center'>
+    <img src='.\img\gantt.png', alt='간트 차트'>
+    <p><em>간트 차트</em></p>
+</div>
+
+## 🤝 협업 Tools
+### 학습 알림
+#### Slack & KakaoTalk
+- **학습 시작, 완료, 에러 발생** 시 Slack과 카카오톡을 통해 실시간으로 알림을 전송하여 팀원들이 즉시 확인할 수 있도록 하였습니다.
+<div align='center'>
+    <img src='.\img\slack.png', alt='slack 학습 알림'>
+    <p><em>Slack 알림</em></p>
+    <img src='.\img\kakaotalk.png', alt='카카오톡 학습 알림'>
+    <p><em>카카오톡 알림</em></p>
+</div>
+
+#### Google Sheet
+- 서버 사용 현황 확인 및 학습 완료 시 학습결과를 자동으로 작성합니다.
+<div align='center'>
+    <img src='.\img\googlesheet_server.png', alt='서버 사용 현황'>
+    <p><em>Google Sheet 서버 사용 현황</em></p>
+    <img src='.\img\googlesheet_result.png', alt='학습 결과 저장'>
+    <p><em>학습 결과 자동 저장</em></p>
+</div>
+
+### 프로젝트 관리
+#### Notion
+- 프로젝트 관리 및 작업 목록, 회의 기록을 공유합니다.
+#### Zoom
+- 주기적인 회의와 실시간 피드백 제공을 위해 줌을 사용해 소통하였습니다.
+#### GitHub
+- 코드 버전 관리 및 협업을 위해 GitHub를 사용하였습니다.
+
 <br />
+
 
 ## 🥈 프로젝트 결과
 ### Public
-- 4 / 24
+- **4** / 24
 - F1 Score : **0.9200**
 ### Private
-- 5 / 24
+- **5** / 24
 - F1 Score : **0.9073**
 
 <br />
@@ -95,21 +129,21 @@ project/
     
 ```
 ### 1) Services
-- `kakao.py`: 카카오톡 액세스 토큰을 불러와 카카오톡 메시지로 학습현황을 전송합니다.
-- `refresh_kakao_token.py`: 카카오톡 액세스 토큰을 새로 발급합니다.
-- `sheet_kakao_key_update.py`: 구글 스프레드 시트에 카카오톡 액세스 토큰을 업데이트합니다.
-- `sheet_pull_kakao_key.py`: 구글 스프레드 시트에서 액세스 토큰을 가져와 로컬 토큰을 업데이트합니다.
-- `slack.py`: 학습현황을 슬랙 메시지로 보냅니다.
-- `spreadsheet.py`: 서버의 학습 현황을 구글 스프레드 시트에 업데이트합니다.
+- `kakao.py`: 카카오톡 메세지 전송, uuid 추출 기능을 제공합니다.
+- `refresh_kakao_token.py`: 카카오 리프레시 토큰을 이용해 카카오톡 액세스 토큰을 갱신합니다. (crontab 8시간 마다 실행)
+- `sheet_kakao_key_update.py`: 갱신된 카카오톡 액세스 토큰을 Google Sheet에 업데이트합니다. (crontab 30초마다 실행)
+- `sheet_pull_kakao_key.py`: Google Sheet에서 최신 카카오톡 액세스 토큰을 가져와 로컬 환경에 업데이트 합니다. (crontab 30초마다 실행)
+- `slack.py`: 학습현황을 슬랙 메시지로 전송하는 기능을 제공합니다.
+- `spreadsheet.py`: 서버 학습 현황 및 학습 데이터를 Google Sheet에 업데이트, 추가하는 기능을 제공합니다.
   
 ### 2) tools
-- `cloba2datu.ipynb`: cloba 데이터셋을 datumaro 형식으로 변환합니다.
+- `cloba2datu.ipynb`: cord 데이터셋을 datumaro 형식으로 변환합니다.
 - `datu2ufo.ipynb`: datumaro 형식의 데이터셋을 UFO 형식으로 변환합니다.
 - `ufo2datu.ipynb`: UFO 형식의 데이터셋을 datumaro 형식으로 변환합니다.
 - `easyocr_pseudo.ipynb`: Easyocr 라이브러리를 활용해서 pseudo-labeling을 진행합니다.
-- `img_hash.ipynb`: 이미지 hash값을 구합니다.
+- `img_hash.ipynb`: 이미지 hash값을 이용해 중복 이미지를 제거하고 200장의 이미지를 추출합니다.
 - `inference_visualize.ipynb`: inference한 결과를 test이미지에 시각화합니다.
-- `server-status.py`: 현재 서버상태를 불러옵니다.
+- `server-status.py`: 서버의 CPU, 메모리, GPU 상태를 조회합니다.
 - `data_duplication_check.py`: hash값으로 이미지가 겹치는지 확인하고 제거합니다.
 - `streamlit_viz.py`: dataset의 annotation을 streamlit으로 시각화합니다.
 
