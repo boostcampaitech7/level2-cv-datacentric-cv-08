@@ -50,7 +50,6 @@ receiver_uuids = list(receiver_uuids.keys())
 def parse_args():
     parser = ArgumentParser()
 
-    # Conventional args
     parser.add_argument('--data_dir', type=str,
                         default=os.environ.get('SM_CHANNEL_TRAIN', 'data'))
     parser.add_argument('--model_dir', type=str, default=os.environ.get('SM_MODEL_DIR',
@@ -84,7 +83,6 @@ def do_training(data_dir, model_dir, device, image_size, input_size, num_workers
     kakao.send_message(receiver_uuids=receiver_uuids, 
                        message_text=f"{name}님이\n서버 {server_number}번에서\n{max_epoch}epoch\n{task}학습을 시작하였습니다.")
     
-    # 슬랙 알림
     slack.send_slack_notification(f"{name}님이\n서버 {server_number}번에서\n{max_epoch}epoch\n{task}학습을 시작하였습니다.")
     mlflow.set_tracking_uri(mlflow_url)
     mlflow.set_experiment(mlflow_exp)
