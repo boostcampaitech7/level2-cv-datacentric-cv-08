@@ -23,6 +23,11 @@ from model import EAST
 import mlflow
 import mlflow.pytorch
 
+from matplotlib import pyplot as plt
+import numpy as np
+from PIL import Image
+import random
+
 '''
     server_number : 사용중인 서버숫자
     name : 작업자 이름
@@ -64,6 +69,7 @@ def parse_args():
     parser.add_argument('--learning_rate', type=float, default=1e-3)
     parser.add_argument('--max_epoch', type=int, default=150)
     parser.add_argument('--save_interval', type=int, default=5)
+    parser.add_argument('--visualize', action='store_true', help="Enable visualization of augmented images")
     
     args = parser.parse_args()
 
@@ -73,7 +79,7 @@ def parse_args():
     return args
 
 def do_training(data_dir, model_dir, device, image_size, input_size, num_workers, batch_size,
-                learning_rate, max_epoch, save_interval):
+                learning_rate, max_epoch, save_interval, visualize=False):
     
     sp.update_server_status(server_number = server_number, 
                             name = name,
@@ -111,6 +117,30 @@ def do_training(data_dir, model_dir, device, image_size, input_size, num_workers
                 image_size=image_size,
                 crop_size=input_size,
             )
+            
+            if visualize:
+                sample_indices = random.sample(range(len(dataset)), 8)
+                fig, axes = plt.subplots(2, 4, figsize=(20, 10))
+    
+                for i, idx in enumerate(sample_indices):
+                    img, word_bboxes, _ = dataset[idx]
+                    if img.shape[0] == 3:
+                        img = img.transpose(1, 2, 0)
+                    img = np.clip((img * 0.5 + 0.5) * 255, 0, 255).astype(np.uint8)
+    
+                    axes[i // 4, i % 4].imshow(img)
+                    for bbox in word_bboxes:
+                        if bbox.shape == (4, 2):
+                            polygon = plt.Polygon(bbox, closed=True, edgecolor='red', linewidth=2, fill=None)
+                            axes[i // 4, i % 4].add_patch(polygon)
+    
+                    axes[i // 4, i % 4].axis('off')
+                    axes[i // 4, i % 4].set_title(f"Sample Image {i + 1}")
+                    Image.fromarray(img).save(f"sample_image_{i + 1}.jpg")
+    
+                plt.tight_layout()
+                plt.show()
+            
             dataset = EASTDataset(dataset)
             num_batches = math.ceil(len(dataset) / batch_size)
             train_loader = DataLoader(
