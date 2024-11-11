@@ -237,4 +237,4 @@ python custom_train.py
 - `--save_interval` : 가중치를 저장할 epoch 간격 (기본값 : 5)
 
 ## 🏅 Wrap-Up Report   
-### [ Wrap-Up Report 👑]
+### [ Wrap-Up Report 👑](https://docs.google.com/document/d/1x5ZAJIR3SXCdC1a8Weymimp7ksPNG3kHxZ7rK_ARepg/edit?usp=sharing)
