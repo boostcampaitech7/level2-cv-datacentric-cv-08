@@ -237,4 +237,4 @@ python custom_train.py
 - `--save_interval` : 가중치를 저장할 epoch 간격 (기본값 : 5)
 
 ## 🏅 Wrap-Up Report   
-### [ Wrap-Up Report 👑](.\wrap-up\CV08_OCR_랩업리포트.pdf)
+### [ Wrap-Up Report 👑](https://github.com/boostcampaitech7/level2-cv-datacentric-cv-08/blob/main/wrap-up/CV08_OCR_%EB%9E%A9%EC%97%85%EB%A6%AC%ED%8F%AC%ED%8A%B8.pdf)
